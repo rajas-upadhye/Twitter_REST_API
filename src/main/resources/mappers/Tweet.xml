@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Tweet">
+
+    <resultMap id="Tweet" type="api.Entity.Tweet">
+        <result property="tweetId" column="tweet_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="tweet" column="tweet"/>
+        <result property="timestamp" column="timestamp"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="api.Entity.Tweet" useGeneratedKeys="true" keyProperty="tweetId" keyColumn="tweet_id">
+        INSERT INTO tweets (user_id,tweet,timestamp) VALUES (#{userId},#{tweet},#{timestamp});
+    </insert>
+
+    <select id="getTweetsByUserId" parameterType="int" resultMap="Tweet">
+        SELECT * FROM tweets where user_id=#{userId} and status = 1 order by timestamp desc;
+    </select>
+
+    <update id="deleteTweetById" parameterType="int">
+        UPDATE tweets SET status = 0 where tweet_id=#{tweetId};
+    </update>
+
+</mapper>
+
